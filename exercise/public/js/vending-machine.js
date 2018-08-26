@@ -11763,19 +11763,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
-        products: {
+        get_products_route: {
             required: true,
-            type: Object
+            type: String
         }
     },
 
     data: function data() {
         return {
+            products: [],
             available_coin: [1, 2, 5, 10]
         };
     },
     mounted: function mounted() {
         console.log('Component mounted.');
+        this.getProducts();
+    },
+
+
+    methods: {
+        getProducts: function getProducts() {
+            var _this = this;
+
+            axios.get(this.get_products_route).then(function (response) {
+                _this.products = response.data;
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
     }
 });
 

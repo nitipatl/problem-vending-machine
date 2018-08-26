@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <vending-machine-component :products="{{ json_encode($products)  }}"
+    <vending-machine-component :get_products_route="'{{ route('get-products')  }}'"
     ></vending-machine-component>
 @endsection
 

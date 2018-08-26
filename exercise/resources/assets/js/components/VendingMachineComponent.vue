@@ -35,21 +35,35 @@
 <script>
     export default {
         props: {
-            products: {
+            get_products_route: {
                 required: true,
-                type: Object,
+                type: String,
             },
         },
 
         data() {
             return {
+                products: [],
                 available_coin: [1, 2, 5, 10],
             }
         },
 
         mounted() {
-            console.log('Component mounted.')
-        }
+            console.log('Component mounted.');
+            this.getProducts();
+        },
+
+        methods: {
+            getProducts() {
+                axios.get(this.get_products_route)
+                    .then(response => {
+                        this.products = response.data;
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    });
+            },
+        },
     }
 </script>
 

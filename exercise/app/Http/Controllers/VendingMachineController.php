@@ -26,8 +26,16 @@ class VendingMachineController extends Controller
      */
     public function showVendingMachinePage()
     {
+        return view('vending-machine');
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getProductsList()
+    {
         $products = $this->vending_machine_repository->getProducts();
 
-        return view('vending-machine', compact('products'));
+        return response()->json($products);
     }
 }
