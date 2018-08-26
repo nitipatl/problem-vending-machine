@@ -12182,16 +12182,27 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
+        available_coins: {
+            required: true,
+            type: Array
+        },
         get_products_route: {
             required: true,
             type: String
+        },
+        money_log_route: {
+            required: true,
+            type: String
+        },
+        money_statuses: {
+            required: true,
+            type: Object
         }
     },
 
     data: function data() {
         return {
             products: [],
-            available_coin: [1, 2, 5, 10],
             inserted_coin: 0,
             refund_timer: null
         };
@@ -12225,6 +12236,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             this.setRefundTimer();
 
             this.inserted_coin += coin;
+
+            this.saveMoneyLog(coin, this.money_statuses.insert);
         },
 
 
@@ -12255,6 +12268,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                     var html = 'You got: ' + product.name + '.';
 
                     if (change.length > 0) {
+                        _this2.saveMoneyLog(change, _this2.money_statuses.change);
+
                         html += ' and ' + change + ' change.';
                     }
 
@@ -12291,7 +12306,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 
                                 while (change !== 0) {
-                                    change_coin = __WEBPACK_IMPORTED_MODULE_1_lodash_findLast___default()(this.available_coin, function (coin) {
+                                    change_coin = __WEBPACK_IMPORTED_MODULE_1_lodash_findLast___default()(this.available_coins, function (coin) {
                                         return coin === change || coin <= change;
                                     });
 
@@ -12346,9 +12361,13 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
          * Refund after user have no action.
          */
         refund: function refund() {
+            var _this4 = this;
+
             if (this.inserted_coin > 0) {
                 this.calculateChange(this.inserted_coin, 0).then(function (change) {
                     var html = 'You got refund ' + change;
+
+                    _this4.saveMoneyLog(change, _this4.money_statuses.refund);
 
                     swal({
                         type: 'warning',
@@ -12357,6 +12376,22 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                     });
                 });
             }
+        },
+
+
+        /**
+         * Save money log after insert, change and refund.
+         *
+         * @param value
+         * @param status
+         */
+        saveMoneyLog: function saveMoneyLog(value, status) {
+            var data = {
+                values: typeof value === 'number' ? [value] : value,
+                status: status
+            };
+
+            axios.post(this.money_log_route, data);
         }
     }
 });
@@ -12442,7 +12477,7 @@ var render = function() {
             _c(
               "div",
               { staticClass: "row justify-content-center" },
-              _vm._l(_vm.available_coin, function(coin) {
+              _vm._l(_vm.available_coins, function(coin) {
                 return _c(
                   "div",
                   {

@@ -39,7 +39,7 @@
                     <div class="col-12 mt-3">
 
                         <div class="row justify-content-center">
-                            <div v-for="coin in available_coin"
+                            <div v-for="coin in available_coins"
                                  class="col-auto p-2"
                                  @click="insertCoin(coin)">
                                 <div class="coin">
@@ -62,16 +62,27 @@
 
     export default {
         props: {
+            available_coins: {
+                required: true,
+                type: Array,
+            },
             get_products_route: {
                 required: true,
                 type: String,
+            },
+            money_log_route: {
+                required: true,
+                type: String,
+            },
+            money_statuses: {
+                required: true,
+                type: Object,
             },
         },
 
         data() {
             return {
                 products: [],
-                available_coin: [1, 2, 5, 10],
                 inserted_coin: 0,
                 refund_timer: null,
             }
@@ -104,6 +115,8 @@
                 this.setRefundTimer();
 
                 this.inserted_coin += coin;
+
+                this.saveMoneyLog(coin, this.money_statuses.insert);
             },
 
             /**
@@ -132,6 +145,8 @@
                             let html = 'You got: ' + product.name + '.';
 
                             if (change.length > 0) {
+                                this.saveMoneyLog(change, this.money_statuses.change);
+
                                 html += ' and ' + change + ' change.';
                             }
 
@@ -161,7 +176,7 @@
                 let change_coins = [];
 
                 while (change !== 0) {
-                    let change_coin = findLast(this.available_coin, (coin) => {
+                    let change_coin = findLast(this.available_coins, (coin) => {
                         return coin === change || coin <= change;
                     });
 
@@ -201,6 +216,8 @@
                         .then(change => {
                             let html = 'You got refund ' + change;
 
+                            this.saveMoneyLog(change, this.money_statuses.refund);
+
                             swal({
                                 type: 'warning',
                                 title: 'Refund',
@@ -208,6 +225,21 @@
                             })
                         });
                 }
+            },
+
+            /**
+             * Save money log after insert, change and refund.
+             *
+             * @param value
+             * @param status
+             */
+            saveMoneyLog(value, status) {
+                let data = {
+                    values: typeof value === 'number' ? [value] : value,
+                    status: status,
+                };
+
+                axios.post(this.money_log_route, data)
             },
         },
     }
