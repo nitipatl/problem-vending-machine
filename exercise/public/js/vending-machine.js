@@ -11760,6 +11760,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
@@ -11772,7 +11793,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             products: [],
-            available_coin: [1, 2, 5, 10]
+            available_coin: [1, 2, 5, 10],
+            inserted_coin: 0
         };
     },
     mounted: function mounted() {
@@ -11790,6 +11812,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).catch(function (error) {
                 console.log(error);
             });
+        },
+        insertCoin: function insertCoin(coin) {
+            this.inserted_coin += coin;
         }
     }
 });
@@ -11842,8 +11867,51 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "col-sm-3" }, [
-        _vm._v("\n            Menu\n        ")
+      _c("div", { staticClass: "col-sm-3 pl-sm-0" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-12 mt-sm-3 text-right px-4" }, [
+            _c("div", { staticClass: "inserted-coin" }, [
+              _vm._v(
+                "\n                        " +
+                  _vm._s(_vm.inserted_coin) +
+                  "\n                    "
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-12 mt-sm-3" }, [
+            _c(
+              "div",
+              { staticClass: "row justify-content-center" },
+              _vm._l(_vm.available_coin, function(coin) {
+                return _c(
+                  "div",
+                  {
+                    staticClass: "col-auto p-2",
+                    on: {
+                      click: function($event) {
+                        _vm.insertCoin(coin)
+                      }
+                    }
+                  },
+                  [
+                    _c("div", { staticClass: "coin" }, [
+                      _c("img", {
+                        attrs: {
+                          src:
+                            "data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA1MTEuOTk3IDUxMS45OTciIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMS45OTcgNTExLjk5NzsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSI1MTJweCIgaGVpZ2h0PSI1MTJweCI+CjxjaXJjbGUgc3R5bGU9ImZpbGw6I0ZGQzg0MzsiIGN4PSIyNTUuOTk4IiBjeT0iMjU1Ljk5OCIgcj0iMjU1Ljk5OCIvPgo8Y2lyY2xlIHN0eWxlPSJmaWxsOiNENDkwMDA7IiBjeD0iMjU1Ljk5OCIgY3k9IjI1NS45OTgiIHI9IjIwNy43NDUiLz4KPHBhdGggc3R5bGU9ImZpbGw6I0ZGQzg0MzsiIGQ9Ik0yNTkuMjAzLDEwMi4zNjFjMTAuMjY2LDAsMTguNDA4LDguMTQyLDE4LjQwOCwxOC40MDh2NC45NTZjMTkuMTE3LDIuODMyLDM2LjEwOCw4LjQ5Niw1MS4zMywxNi45OTMgIGM2LjcyNiwzLjg5MywxMi43NDUsMTAuNjIsMTIuNzQ1LDIxLjI0MWMwLDEzLjQ1Mi0xMC42MjEsMjMuNzE4LTI0LjA3MywyMy43MThjLTQuMjQ3LDAtOC40OTYtMS4wNjItMTIuMzktMy4xODYgIGMtOS45MTItNS4zMS0xOS44MjUtOS41NTgtMjkuMzgzLTEyLjAzNnY1My44MWM1My44MDksMTQuNTEzLDc2LjgyLDM2LjQ2Miw3Ni44Miw3Ni4xMTFzLTMwLjQ0NCw2NS4xMzctNzUuMDUsNzAuMDkydjE4Ljc2MiAgYzAsMTAuMjY2LTguMTQyLDE4LjQwOS0xOC40MDgsMTguNDA5Yy0xMC4yNjYsMC0xOC40MDgtOC4xNDMtMTguNDA4LTE4LjQwOXYtMTkuMTE2Yy0yNS4xMzQtMy4xODYtNDguODU0LTEyLjAzNi02OS43NC0yNC43ODEgIGMtNy40MzQtNC42MDEtMTIuMDM2LTExLjY4MS0xMi4wMzYtMjEuMjRjMC0xMy44MDYsMTAuNjIxLTI0LjA3MywyNC40MjctMjQuMDczYzQuNjAyLDAsOS41NTgsMS43NywxMy44MDcsNC42MDIgIGMxNC44NjgsOS41NTgsMjkuMDI5LDE2LjI4NSw0NS4zMTMsMTkuODI1di01Ni4yODhjLTUwLjk3OC0xMy44MDYtNzYuMTEyLTMzLjI3Ni03Ni4xMTItNzUuNDAzICBjMC0zOC45NDEsMjkuNzM3LTY1LjEzNyw3NC4zNDItNjkuNzR2LTQuMjQ4QzI0MC43OTUsMTEwLjUwMywyNDguOTM3LDEwMi4zNjEsMjU5LjIwMywxMDIuMzYxeiBNMjQyLjU2NiwyMTcuMDU5di00Ny43OTEgIGMtMTYuOTkzLDIuNDc5LTI0LjQyNywxMC45NzUtMjQuNDI3LDIyLjMwM0MyMTguMTM5LDIwMi41NDUsMjIzLjA5NSwyMDkuOTc5LDI0Mi41NjYsMjE3LjA1OXogTTI3NS44NDIsMjc5LjAxMXY0OS4yMDcgIGMxNi42MzktMi40NzgsMjUuMTM0LTEwLjI2NiwyNS4xMzQtMjMuMDExQzMwMC45NzcsMjkzLjUyNSwyOTQuOTU5LDI4NS43MzYsMjc1Ljg0MiwyNzkuMDExeiIvPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K",
+                          alt: coin
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("div", [_vm._v(_vm._s(coin))])
+                    ])
+                  ]
+                )
+              })
+            )
+          ])
+        ])
       ])
     ])
   ])
@@ -11978,7 +12046,7 @@ exports = module.exports = __webpack_require__(44)(false);
 
 
 // module
-exports.push([module.i, "\n.vending-machine {\n  border-radius: 20px;\n  margin: 10px;\n  padding: 10px;\n  background: orange;\n  height: calc(100vh - 20px);\n}\n.vending-machine > div {\n    height: 100%;\n}\n.products-list {\n  border-radius: 20px;\n  margin: 10px;\n  padding: 10px 20px;\n  background: white;\n  height: auto;\n  overflow: auto;\n}\n.products-list > div {\n    height: 70vh;\n    max-height: 70vh;\n}\n@media (min-width: 576px) {\n.products-list > div {\n        height: calc(100vh - 80px);\n        max-height: calc(100vh - 80px);\n}\n}\n.product {\n  border-radius: 5px;\n  padding: 5px;\n  background: rgba(0, 0, 0, 0.1);\n  height: 100%;\n}\n.product .product-image {\n    max-width: 100%;\n}\n.product:hover {\n    background: rgba(0, 153, 51, 0.1);\n    cursor: pointer;\n}\n", ""]);
+exports.push([module.i, "\n.vending-machine {\n  border-radius: 20px;\n  margin: 10px;\n  padding: 10px;\n  background: orange;\n  height: calc(100vh - 20px);\n}\n.vending-machine > div {\n    height: 100%;\n}\n.products-list {\n  border-radius: 20px;\n  margin: 10px;\n  padding: 10px 20px;\n  background: white;\n  height: auto;\n  overflow: auto;\n}\n.products-list > div {\n    height: 65vh;\n    max-height: 65vh;\n}\n@media (min-width: 576px) {\n.products-list > div {\n        height: calc(100vh - 80px);\n        max-height: calc(100vh - 80px);\n}\n}\n@media (min-width: 576px) {\n.products-list {\n      margin: 10px 0 10px 10px;\n}\n}\n.product {\n  border-radius: 5px;\n  padding: 5px;\n  background: rgba(0, 0, 0, 0.1);\n  height: 100%;\n}\n.product .product-image {\n    max-width: 100%;\n}\n.product:hover {\n    background: rgba(0, 153, 51, 0.1);\n    cursor: pointer;\n}\n.inserted-coin {\n  font-size: 80px;\n  line-height: 80px;\n  padding: 5px 20px 5px 5px;\n  border-radius: 20px;\n  background: rgba(0, 102, 0, 0.3);\n}\ndiv.coin {\n  position: relative;\n  text-align: center;\n}\ndiv.coin:hover {\n    cursor: pointer;\n}\ndiv.coin, div.coin img {\n    max-width: 60px;\n    max-height: 60px;\n}\ndiv.coin div {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    -webkit-transform: translate(-50%, -50%);\n            transform: translate(-50%, -50%);\n    font-size: 40px;\n    font-weight: bold;\n    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;\n}\n", ""]);
 
 // exports
 
