@@ -12265,6 +12265,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                 });
             } else {
                 this.calculateChange(this.inserted_coin, product.price).then(function (change) {
+                    _this2.saveMoneyLog(product.price, _this2.money_statuses.sell);
+
                     var html = 'You got: ' + product.name + '.';
 
                     if (change.length > 0) {

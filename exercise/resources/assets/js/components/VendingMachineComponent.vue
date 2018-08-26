@@ -142,6 +142,8 @@
                 } else {
                     this.calculateChange(this.inserted_coin, product.price)
                         .then(change => {
+                            this.saveMoneyLog(product.price, this.money_statuses.sell);
+
                             let html = 'You got: ' + product.name + '.';
 
                             if (change.length > 0) {

@@ -31,7 +31,6 @@ class SaveMoneyLogRequest extends FormRequest
             ],
             'values.*' => [
                 'integer',
-                Rule::in(config('vending_machine.available_coins')),
             ],
             'status' => [
                 'required',

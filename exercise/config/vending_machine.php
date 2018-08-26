@@ -36,5 +36,6 @@ return [
         'insert' => 1,
         'change' => 2,
         'refund' => 3,
+        'sell' => 10,
     ],
 ];
