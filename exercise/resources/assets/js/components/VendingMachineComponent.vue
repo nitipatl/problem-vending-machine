@@ -78,18 +78,24 @@
                 required: true,
                 type: Object,
             },
+            un_refund: {
+                required: true,
+                type: Number,
+            },
         },
 
         data() {
             return {
                 products: [],
-                inserted_coin: 0,
+                inserted_coin: this.un_refund,
                 refund_timer: null,
             }
         },
 
         mounted() {
             this.getProducts();
+
+            this.refund();
         },
 
         methods: {

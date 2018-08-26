@@ -5,6 +5,7 @@
                                :get_products_route="'{{ route('get-products') }}'"
                                :money_log_route="'{{ route('money-log') }}'"
                                :money_statuses="{{ json_encode(config('vending_machine.money_statuses')) }}"
+                               :un_refund="{{ $un_refund }}"
     ></vending-machine-component>
 @endsection
 

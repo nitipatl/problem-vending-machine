@@ -12197,18 +12197,24 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
         money_statuses: {
             required: true,
             type: Object
+        },
+        un_refund: {
+            required: true,
+            type: Number
         }
     },
 
     data: function data() {
         return {
             products: [],
-            inserted_coin: 0,
+            inserted_coin: this.un_refund,
             refund_timer: null
         };
     },
     mounted: function mounted() {
         this.getProducts();
+
+        this.refund();
     },
 
 

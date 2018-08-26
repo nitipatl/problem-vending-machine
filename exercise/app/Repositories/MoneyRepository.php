@@ -28,4 +28,22 @@ class MoneyRepository
 
         return [$sell, $sell_last_24hrs];
     }
+
+    /**
+     * @return int
+     */
+    public function getUnRefund()
+    {
+        $money = Money::where('created_at', '>=', now()->subHour())->get();
+
+        $insert = $money->where('status', config('vending_machine.money_statuses.insert'))->sum('value');
+        $out = $money->whereIn('status', [
+            config('vending_machine.money_statuses.change'),
+            config('vending_machine.money_statuses.refund'),
+            config('vending_machine.money_statuses.sell'),
+        ])
+            ->sum('value');
+
+        return $insert - $out;
+    }
 }
