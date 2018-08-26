@@ -7,7 +7,8 @@
                         <div class="row">
 
                             <div v-for="product in products.data"
-                                 class="col-6 col-sm-4 col-md-3 text-center px-1 my-1">
+                                 class="col-6 col-md-3 text-center px-1 my-1"
+                                 @click="selectProduct(product)">
                                 <div class="product">
                                     <img :src="product.image"
                                          :alt="product.name"
@@ -32,7 +33,7 @@
                         </div>
                     </div>
 
-                    <div class="col-12 mt-sm-3">
+                    <div class="col-12 mt-3">
 
                         <div class="row justify-content-center">
                             <div v-for="coin in available_coin"
@@ -54,6 +55,8 @@
 </template>
 
 <script>
+    import findLast from 'lodash/findLast';
+
     export default {
         props: {
             get_products_route: {
@@ -67,15 +70,18 @@
                 products: [],
                 available_coin: [1, 2, 5, 10],
                 inserted_coin: 0,
+                refund_timer: null,
             }
         },
 
         mounted() {
-            console.log('Component mounted.');
             this.getProducts();
         },
 
         methods: {
+            /**
+             * Get products from API.
+             */
             getProducts() {
                 axios.get(this.get_products_route)
                     .then(response => {
@@ -86,8 +92,118 @@
                     });
             },
 
+            /**
+             * When user click on coin.
+             *
+             * @param coin
+             */
             insertCoin(coin) {
+                this.setRefundTimer();
+
                 this.inserted_coin += coin;
+            },
+
+            /**
+             * When user click on product.
+             *
+             * @param product
+             */
+            selectProduct(product) {
+                this.setRefundTimer();
+
+                if (! product.in_stock) {
+                    swal({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'This product not available!',
+                    })
+                } else if (this.inserted_coin < product.price) {
+                    swal({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'You don\'t have enough money!',
+                    })
+                } else {
+                    this.calculateChange(this.inserted_coin, product.price)
+                        .then(change => {
+                            let html = 'You got: ' + product.name + '.';
+
+                            if (change.length > 0) {
+                                html += ' and ' + change + ' change.';
+                            }
+
+                            swal({
+                                type: 'success',
+                                title: 'Thank you',
+                                html: html,
+                            });
+
+                            this.getProducts();
+                            this.clearRefundTimer();
+                        });
+                }
+            },
+
+            /**
+             * Calculate change and return coins to user.
+             *
+             * @param coin
+             * @param price
+             * @returns {Promise<Array>}
+             */
+            async calculateChange(coin, price) {
+                let change = coin - price;
+
+                let change_coins = [];
+
+                while (change !== 0) {
+                    let change_coin = findLast(this.available_coin, (coin) => {
+                        return coin === change || coin <= change;
+                    });
+
+                    change -= change_coin;
+                    change_coins.push(change_coin);
+                }
+
+                this.inserted_coin = 0;
+
+                return change_coins;
+            },
+
+            /**
+             * Set refund timer when user insert coin and no action in 10 seconds.
+             */
+            setRefundTimer() {
+                this.clearRefundTimer();
+
+                this.refund_timer = setTimeout(() => {
+                    this.refund();
+                }, 10000);
+            },
+
+            /**
+             * Clear refund timer when user got product. Or before re set refund timer.
+             */
+            clearRefundTimer() {
+                clearTimeout(this.refund_timer);
+            },
+
+            /**
+             * Refund after user have no action.
+             */
+            refund() {
+                if (this.inserted_coin > 0) {
+                    this.calculateChange(this.inserted_coin, 0)
+                        .then(change => {
+                            let html = 'You got refund ' + change;
+
+                            swal({
+                                type: 'warning',
+                                title: 'Refund',
+                                html: html,
+                            })
+                        });
+                }
             },
         },
     }
