@@ -30,7 +30,7 @@
               <div class="card-body">
                 <p class="card-text">{{ item.name }} {{ item.price }} Baht</p>
               </div>
-              <button type="button" v-on:click="SelectChoice(index)" v-bind:class="{ 'active' : selected == index }"  class="w-100 btn btn-primary">
+              <button type="button" v-on:click="SelectChoice(index)" class="w-100 btn btn-primary">
                 Select
               </button>
             </div>
