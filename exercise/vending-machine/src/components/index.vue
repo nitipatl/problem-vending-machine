@@ -7,10 +7,19 @@
             Problem Vending Machine
           </h3>
           <h5>
-            Money : {{ totalMoney }} 
-            <button type="button" v-on:click="show = true" class="btn btn-primary">
-                Select Coin
-            </button>
+            <div class="row">
+              <div class="col">
+                Total money : {{ totalMoney }} Baht
+              </div>
+              <div class="col text-right">
+                <button type="button" @click="RefundFlow" v-if="totalMoney != 0" class="btn btn-primary" > Refund </button>
+                <button type="button" @click="show = true" class="btn btn-primary" >
+                    Select Coin
+                </button>
+              </div>
+            </div>
+
+            
           </h5>
         </div>
       </div>
@@ -19,7 +28,7 @@
             <div class="card">
               <img :src="item.image" class="card-img-top">
               <div class="card-body">
-                <p class="card-text">{{ item.name }} ราคา : {{ item.price }}</p>
+                <p class="card-text">{{ item.name }} {{ item.price }} Baht</p>
               </div>
               <button type="button" v-on:click="SelectChoice(index)" v-bind:class="{ 'active' : selected == index }"  class="w-100 btn btn-primary">
                 Select
@@ -30,62 +39,62 @@
     </div>
 
   <!-- Modal Component -->
-    <b-modal v-model="show" @ok="PlusNumberInArray" no-close-on-esc no-close-on-backdrop hide-header-close ok-only id="modal-center" centered title="Select coins">
+    <b-modal v-model="show" hide-footer no-close-on-esc no-close-on-backdrop hide-header-close ok-only id="modal-center" centered title="Select coins">
       <div class="text-center">
         <p class="text-danger"> {{ alertSelectCoin }} </p>
         <img src="../assets/money.png" style="width:100px" alt="">
 
       </div> 
-      <div v-for="(item, index) in simpleCoins" :key="index" class="row mt-5 ">
-        <div class="col-7 text-right">
-          <button type="button" @click="PullCoins(item)"  class="w-10 btn btn-secondary">-</button>          
-          <button type="button" class="w-25 btn btn-secondary">{{ item }}</button>
-          <button type="button" @click="PushCoins(item)" class="w-10 btn btn-secondary">+</button>          
+      <div  class="row mt-5">
+        <div v-for="(item, index) in simpleCoins" :key="index" class="col-3 text-right">
+          <button type="button" @click="PushCoins(item)" class="w-100 btn btn-warning">{{ item }}</button>
 
         </div>
-        <div v-if="item == 10" class="col pt-2 text-left">
-            x {{ numberTenCoins }} 
-        </div>
-        <div v-else-if="item == 5" class="col pt-2 text-left">
-            x {{ numberFiveCoins }}
-        </div>
-        <div v-if="item == 2" class="col pt-2 text-left">
-            x {{ numberTwoCoins }}
-        </div>
-        <div v-if="item == 1" class="col pt-2 text-left">
-            x {{ numberOneCoins }}
-        </div>
+        
       </div>
-
-    </b-modal>
-    <b-modal v-model="showModelSuccess" @ok="SuccessFlow" no-close-on-esc no-close-on-backdrop hide-header-close ok-only id="modal-center" centered title="Change coins">
+    <div class="row text-center">
+      <div  class="col-3 pt-2 ">
+         <div v-if="numberTenCoins != 0"> x {{ numberTenCoins }}  </div> 
+      </div>
+      <div class="col-3 pt-2">
+        <div v-if="numberFiveCoins != 0"> x {{ numberFiveCoins }}  </div> 
+      </div> 
+      <div class="col-3 pt-2">
+        <div v-if="numberTwoCoins != 0"> x {{ numberTwoCoins }}  </div> 
+      </div>
+      <div class="col-3 pt-2 ">
+        <div v-if="numberOneCoins != 0"> x {{ numberOneCoins }}  </div> 
+      </div> 
+    </div>
+    <div class="mt-2 row text-center">
+      <div v-if="totalMoney != 0" class="col-12">
+        Total money : {{ totalMoney }} baht        
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col text-right">
+        <button type="button" class="btn btn-warning" @click="show = false"> Ok </button>
+      </div>
+        
+    </div>
+  </b-modal>
+    <b-modal v-model="showModelSuccess" @ok="SuccessFlow" no-close-on-esc no-close-on-backdrop hide-header-close ok-only id="modal-center" centered title="Result">
       <div class="text-center">
-        <p class="text-success"> Thank you </p>
-        <img src="../assets/money.png" style="width:100px" alt="">
-
-         <div v-for="(item, index) in simpleCoins" :key="index" class="row mt-5 ">
-            <div class="col-7 text-right">
-              Coin : {{  item  }}   
-
-            </div>
-            <div v-if="item == 10" class="col text-left">
-                x {{ numberTenCoins }} 
-            </div>
-            <div v-else-if="item == 5" class="col text-left">
-                x {{ numberFiveCoins }}
-            </div>
-            <div v-if="item == 2" class="col text-left">
-                x {{ numberTwoCoins }}
-            </div>
-            <div v-if="item == 1" class="col text-left">
-                x {{ numberOneCoins }}
-            </div>
-          </div>
+        <p class="text-success"> {{ successSelectCoin }} </p>
+        <img :src="selected.image" v-if="selected.length != 0" style="width:250px" alt="">
+        <p class="text-secondary" v-if="selected.length != 0">You take {{ selected.name }} {{ selected.price }} Baht</p>
+        <div v-if="totalMoney != selected.price">
+          <span v-if="selected.length != 0">  Change Coin : </span>
+          <span v-if="selected.length == 0">  Refund Coin : </span> 
+            <span v-for="(item, index) in changeCoins" :key="index" >{{ item }} <span v-if="changeCoins.length-1 != index"> , </span></span>
+          </br>
+          <span v-if="selected.length != 0"> Change Money : {{ totalMoney - selected.price }} </span>
+          <span v-if="selected.length == 0"> Refund Money : {{ totalMoney }} </span>
+        </div>
       </div> 
     </b-modal>
   </div>
-  
-  
+
 </template>
 
 <script>
@@ -97,7 +106,7 @@ export default {
       show : false,
       showModelSuccess : false,
       info : [],
-      selected : null,
+      selected : [],
       coins : [],
       alertSelectCoin : "",
       successSelectCoin : "",
@@ -112,10 +121,12 @@ export default {
   },
   
   methods: {
-    PlusNumberInArray : function() {
-      this.coins.forEach(element => {
-        this.totalMoney += element
-      });      
+    
+    RefundFlow : function() {      
+      this.showModelSuccess = true
+      this.successSelectCoin = "Refund your coin"
+      this.changeCoins = this.coins
+
     },
     SetNumber : function(result) {
       this.simpleCoins.forEach(element => {
@@ -144,28 +155,28 @@ export default {
     GetNumber : function(bath , result) {
       let numberCoins = result.filter( (coins) => {
         return coins == bath
+
       })      
       return  numberCoins.length
-    },
-    PullCoins : function(bath) {
-       let index = this.coins.indexOf(bath);
- 
-        if (index > -1) {
-          this.coins.splice(index, 1);
-        }
-        this.SetNumber(this.coins)
 
     },
     PushCoins : function(bath) {
       this.coins.push(bath)
       this.SetNumber(this.coins)
+      this.totalMoney += bath
     },
     SuccessFlow : function() {
-       this.numberOneCoins = 0
-          this.numberTwoCoins = 0
-          this.numberFiveCoins = 0
-          this.numberTenCoins = 0
-          this.show = true
+      this.numberOneCoins = 0
+      this.numberTwoCoins = 0
+      this.numberFiveCoins = 0
+      this.numberTenCoins = 0
+      this.show = true
+      this.totalMoney = 0
+      this.coins = []
+      this.selected = []
+      this.alertSelectCoin = ""
+      this.successSelectCoin = "Thank you. Come again soon!"
+
     },
     CalculateCoin : function(money) {
       
@@ -199,8 +210,7 @@ export default {
       
     },
     SelectChoice : function(index) {
-      this.selected = index
-      const item = this.info[this.selected]
+      const item = this.info[index]
       this.alertSelectCoin = ""
 
       if (this.totalMoney > 0 && this.totalMoney >= item['price']  ) {
@@ -210,11 +220,11 @@ export default {
           this.CalculateCoin(change)
           this.SetNumber(this.changeCoins)
           this.coins = []
-          this.totalMoney = 0
-         
+          this.selected = item          
           this.showModelSuccess = true
+
         } else {
-          alert('his product isn\'t available')
+          alert('This product isn\'t available')
         }
       } else {
         this.show = true
