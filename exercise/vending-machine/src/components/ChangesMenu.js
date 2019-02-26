@@ -24,21 +24,20 @@ class ChangesMenu extends Component {
       <div className="ui grid">
         <div className="two column row">
           <div className="column">
-            <div className="ui center aligned segment"> Item </div>
+            <div className="ui center aligned segment"> { this.props.label } </div>
             <ChangesBar/>
           </div>
           <div className="column">
           <div className="ui teal button" onClick={this.onRefundClick}>refund</div>
           </div>
         </div>
-
       </div>
     )
   }
 }
 
-const mapStateToProps = ({ balance,changes }) => {
-  return { balance,changes }
+const mapStateToProps = ({ balance,changes,label }) => {
+  return { balance,changes,label }
 }
 
 export default connect(mapStateToProps, { resetBalance,refundChanges })(ChangesMenu)
