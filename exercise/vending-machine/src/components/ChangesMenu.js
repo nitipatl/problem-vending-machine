@@ -16,12 +16,11 @@ class ChangesMenu extends Component {
                         })
     this.props.resetBalance()
     this.props.refundChanges(refundCoins)
-    // console.log(refundCoins,balance);
   }
 
   checkLabel(label){
     switch(label){
-      case 'Label': return ''
+      case '': return ''
       case NOT_ENOUGH_MONEY: return 'negative'
       case OUT_OF_STOCK: return 'negative'
       default: return 'positive'
@@ -29,12 +28,13 @@ class ChangesMenu extends Component {
   }
 
   render(){
-    // console.log(this.props.changes);
     return (
-      <div className="ui basic compact segment">
-          <div className={`ui ${this.checkLabel(this.props.label)} message`}>{ this.props.label }</div>
-          <ChangesBar/>
-          <div className="ui teal right floated button" onClick={this.onRefundClick}>refund</div>
+      <div className="item">
+        <div className="ui basic compact segment">
+            <div className={`ui ${this.checkLabel(this.props.label)} message`}>{ this.props.label }</div>
+            <ChangesBar/>
+        </div>
+        <div className="ui teal right floated button" onClick={this.onRefundClick}>Refund</div>
       </div>
     )
   }

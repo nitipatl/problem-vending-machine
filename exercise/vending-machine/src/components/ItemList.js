@@ -16,9 +16,13 @@ class ItemList extends Component {
     let balance = this.props.balance
     let label = ''
 
+    //Reset Changes
+    this.props.refundChanges([0,0,0,0])
+    //
+
     if(balance >= item.price && item.in_stock){
       balance -= item.price
-      label = `You purchased ${item.name} price:${item.price} changes:${balance}`
+      label = `Got ${item.name} Price:${item.price} Changes:${balance}`
 
       const refundCoins = coins.map(coin => {
                             const x = Math.floor(balance/coin)
@@ -34,31 +38,47 @@ class ItemList extends Component {
 
     //Label will show on changes menu
     this.props.setLabel(label)
-    // console.log(label);
   }
+
+  checkItemStatus(item){
+    if(item.in_stock === false){
+      return 'red'
+    }else if(this.props.balance>=item.price){
+      return 'green'
+    }
+    return 'grey'
+  }
+
 
   renderItems(){
     return this.props.items.map(item => (
-      <div key={item.id} className={`${item.in_stock?'green':'red'} card`} onClick={() => this.onItemClick(item)}>
+      <div
+        key={item.id}
+        className="card"
+        onClick={() => this.onItemClick(item)}>
+
         <div className="image">
           <img src={item.image} alt="img not found"/>
         </div>
+
         <div className="content">
           <div className="center aligned header">
             {item.name}
           </div>
-        </div>
-        <div className="extra content">
-          <div className="center aligned header">
+          <div className="center aligned">
             price: {item.price}
           </div>
         </div>
+
+        <div className="extra content">
+          <div className={`ui inverted ${this.checkItemStatus(item)} segment`}></div>
+        </div>
+
       </div>
     ))
   }
 
   render(){
-    // console.log(this.props.items);
     return (
       <div className="ui basic segment">
         <div className="ui centered cards">

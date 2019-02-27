@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 const BalanceBar = (props) => {
   return (
-    <div className="ui top fixed vertical compact inverted yellow menu">
+    <div className="ui top fixed large vertical compact inverted yellow menu">
       <div className="item">{`Balance: ฿ ${props.balance}`}</div>
     </div>
   )

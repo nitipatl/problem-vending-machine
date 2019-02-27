@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 class ChangesBar extends Component {
   renderChangesBar(){
     const coins = [10,5,2,1]
-    return this.props.changes.map((change,index) => change>0?<span key={coins[index]}>{`${coins[index]} - ${change} ${change>1?'coins':'coin'} ,`}</span>:null)
+    return this.props.changes.map((change,index) => change>0?<div key={coins[index]}>{`฿${coins[index]} - ${change} ${change>1?'coins':'coin'}`}</div>:null)
   }
 
   render(){
