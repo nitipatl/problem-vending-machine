@@ -2,6 +2,9 @@ import React,{ Component } from 'react'
 import { connect } from 'react-redux'
 import { fetchItems,resetBalance,refundChanges,setLabel } from '../actions'
 
+export const OUT_OF_STOCK = 'Out of stock'
+export const NOT_ENOUGH_MONEY = 'Not enough money'
+
 class ItemList extends Component {
 
   componentDidMount(){
@@ -25,8 +28,8 @@ class ItemList extends Component {
       this.props.resetBalance()
       this.props.refundChanges(refundCoins)
     }else{
-      label+= balance < item.price? 'Not enough money ':''
-      label+= item.in_stock === false ? 'out of stock':''
+      if(item.in_stock === false) label = OUT_OF_STOCK
+      else if(balance < item.price )label = NOT_ENOUGH_MONEY
     }
 
     //Label will show on changes menu
@@ -36,18 +39,19 @@ class ItemList extends Component {
 
   renderItems(){
     return this.props.items.map(item => (
-      <div key={item.id} className="card" onClick={() => this.onItemClick(item)}>
+      <div key={item.id} className={`${item.in_stock?'green':'red'} card`} onClick={() => this.onItemClick(item)}>
         <div className="image">
           <img src={item.image} alt="img not found"/>
         </div>
-        <div className="header">
-          {item.name}
+        <div className="content">
+          <div className="center aligned header">
+            {item.name}
+          </div>
         </div>
-        <div className="header">
-          {item.price}
-        </div>
-        <div className="header">
-          {item.in_stock?null:'out of stock'}
+        <div className="extra content">
+          <div className="center aligned header">
+            price: {item.price}
+          </div>
         </div>
       </div>
     ))
@@ -56,8 +60,10 @@ class ItemList extends Component {
   render(){
     // console.log(this.props.items);
     return (
-      <div className="ui centered cards">
-        {this.renderItems()}
+      <div className="ui basic segment">
+        <div className="ui centered cards">
+          {this.renderItems()}
+        </div>
       </div>
     )
   }

@@ -1,6 +1,7 @@
 import React,{ Component } from 'react'
 import { connect } from 'react-redux'
 import { resetBalance,refundChanges } from '../actions'
+import { OUT_OF_STOCK,NOT_ENOUGH_MONEY } from './ItemList'
 import ChangesBar from './ChangesBar'
 
 class ChangesMenu extends Component {
@@ -18,19 +19,22 @@ class ChangesMenu extends Component {
     // console.log(refundCoins,balance);
   }
 
+  checkLabel(label){
+    switch(label){
+      case 'Label': return ''
+      case NOT_ENOUGH_MONEY: return 'negative'
+      case OUT_OF_STOCK: return 'negative'
+      default: return 'positive'
+    }
+  }
+
   render(){
     // console.log(this.props.changes);
     return (
-      <div className="ui grid">
-        <div className="two column row">
-          <div className="column">
-            <div className="ui center aligned segment"> { this.props.label } </div>
-            <ChangesBar/>
-          </div>
-          <div className="column">
-          <div className="ui teal button" onClick={this.onRefundClick}>refund</div>
-          </div>
-        </div>
+      <div className="ui basic compact segment">
+          <div className={`ui ${this.checkLabel(this.props.label)} message`}>{ this.props.label }</div>
+          <ChangesBar/>
+          <div className="ui teal right floated button" onClick={this.onRefundClick}>refund</div>
       </div>
     )
   }

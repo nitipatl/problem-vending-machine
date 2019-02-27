@@ -1,6 +1,6 @@
 import { SET_LABEL } from '../actions/types'
 
-export default (state = null,action) => {
+export default (state = 'Label',action) => {
   switch(action.type){
     case SET_LABEL:
       return action.payload

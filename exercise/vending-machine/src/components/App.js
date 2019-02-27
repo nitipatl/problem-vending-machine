@@ -1,6 +1,6 @@
 import React from 'react'
 import BalanceBar from './BalanceBar'
-import InsertCoinMenu from './InsertCoinMenu'
+import InsertCoin from './InsertCoin'
 import ChangesMenu from './ChangesMenu'
 import ItemList from './ItemList'
 
@@ -9,8 +9,10 @@ const App = () => {
     <div className="ui container">
       <BalanceBar/>
       <ItemList/>
-      <InsertCoinMenu/>
-      <ChangesMenu/>
+      <div className="ui basic horizontal segments">
+        <InsertCoin/>
+        <ChangesMenu/>
+      </div>
     </div>
   )
 }
