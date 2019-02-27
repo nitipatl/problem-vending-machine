@@ -81,6 +81,7 @@ class ItemList extends Component {
   render(){
     return (
       <div className="ui basic segment">
+        <div className="ui basic segment"><div className="ui center aligned header">Select Item</div></div>
         <div className="ui centered cards">
           {this.renderItems()}
         </div>

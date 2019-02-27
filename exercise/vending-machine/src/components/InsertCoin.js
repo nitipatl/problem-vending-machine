@@ -1,9 +1,11 @@
 import React,{ Component } from 'react'
 import { connect } from 'react-redux'
-import { increaseBalance } from '../actions'
+import { increaseBalance,setLabel,refundChanges } from '../actions'
 
 class InsertCoin extends Component {
   onCoinInsert(coin){
+    this.props.setLabel('')
+    this.props.refundChanges([0,0,0,0])
     this.props.increaseBalance(coin)
   }
 
@@ -24,4 +26,4 @@ class InsertCoin extends Component {
   }
 }
 
-export default connect(null,{ increaseBalance })(InsertCoin)
+export default connect(null,{ increaseBalance,setLabel,refundChanges })(InsertCoin)

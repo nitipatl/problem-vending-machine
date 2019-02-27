@@ -1,6 +1,6 @@
 import React,{ Component } from 'react'
 import { connect } from 'react-redux'
-import { resetBalance,refundChanges } from '../actions'
+import { resetBalance,refundChanges,setLabel } from '../actions'
 import { OUT_OF_STOCK,NOT_ENOUGH_MONEY } from './ItemList'
 import ChangesBar from './ChangesBar'
 
@@ -15,6 +15,7 @@ class ChangesMenu extends Component {
                           return x
                         })
     this.props.resetBalance()
+    this.props.setLabel('')
     this.props.refundChanges(refundCoins)
   }
 
@@ -44,4 +45,4 @@ const mapStateToProps = ({ balance,changes,label }) => {
   return { balance,changes,label }
 }
 
-export default connect(mapStateToProps, { resetBalance,refundChanges })(ChangesMenu)
+export default connect(mapStateToProps, { resetBalance,refundChanges,setLabel })(ChangesMenu)
